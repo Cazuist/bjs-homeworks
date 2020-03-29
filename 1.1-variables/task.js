@@ -6,22 +6,23 @@
  */
 
 function averageMark(a, g, p) {
-	
-    // реализуйте здесь задание №1
-    
-	return // ваш ответ;
+	let sum = 0;
+
+	for (let arg of arguments) {
+		sum += arg;
+	}
+
+	return sum / arguments.length;
 }
 
-function sayHello(userName) {
-	
-    // реализуйте здесь задание №2
-    
-	return // ваш ответ;
+function sayHello(userName) {	
+  return `Привет, мир! Меня зовут ${userName}`;
 }
 
 function calculateFormula() {
     
-	// реализуйте здесь задание №3
+	let x = 2, y = 22, z = 0;
+  let result = x * y + 5 * z + x - 1;
     
-    return // ваш ответ;
+  return result;
 }
