@@ -8,12 +8,11 @@ class AlarmClock {
 
   addClock(time, callback, id) {
     const findId = this.alarmCollection.find( (item) => item.id === id );
-    
-    try {
-      if (!id) {
-        throw new Error('Невозможно идентифицировать будильник. Параметр id не определен'); 
-      }
+    if (!id) {
+      throw new Error('Невозможно идентифицировать будильник. Параметр id не определен'); 
+    }
 
+    try {
       if (!findId) {
         this.alarmCollection.push({id, time, callback});
       } else {
@@ -27,11 +26,18 @@ class AlarmClock {
   removeClock(id) {
     const findId = this.alarmCollection.find( (item) => item.id === id );
     this.alarmCollection = this.alarmCollection.filter( (item) => item.id != id );
-    return !!findId;
+    return !findId ? false : true;
   }
 
   getCurrentFormattedTime() {
     const time = new Date();
+    const hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
+    const minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();  
+    return `${hours}:${minutes}`;
+  }
+
+  getFormattedTime(timeStamp) {
+    const time = new Date(timeStamp);
     const hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
     const minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes();  
     return `${hours}:${minutes}`;
@@ -85,15 +91,9 @@ function testCase() {
     alarm.printAlarms()
     };
 
-  function timeFormatted(time) {
-    const hours = time.getHours() < 10 ? '0' + time.getHours() : time.getHours();
-    const minutes = time.getMinutes() < 10 ? '0' + time.getMinutes() : time.getMinutes(); 
-    return `${hours}:${minutes}`;
-  }
-
-  const time1 = timeFormatted( new Date( Date.now() ) );
-  const time2 = timeFormatted( new Date( Date.now() + 60000 ) );
-  const time3 = timeFormatted( new Date( Date.now() + 120000 ) );
+  const time1 = alarm.getFormattedTime(Date.now() );
+  const time2 = alarm.getFormattedTime(Date.now() + 60000 );
+  const time3 = alarm.getFormattedTime(Date.now() + 120000 );
 
   alarm.addClock(time1, call1, 1);
   alarm.addClock(time2, call2, 2);
