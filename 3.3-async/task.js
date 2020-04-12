@@ -8,21 +8,26 @@ class AlarmClock {
 
   addClock(time, callback, id) {
     const findId = this.alarmCollection.find( (item) => item.id === id );
-    if (!id) {
-      throw new Error('Невозможно идентифицировать будильник. Параметр id не определен'); 
-    }
+    
+    try {
+      if (!id) {
+        throw new Error('Невозможно идентифицировать будильник. Параметр id не определен'); 
+      }
 
-    if (!findId) {
-      this.alarmCollection.push({id, time, callback});
-    } else {
-      throw new Error('Будильник с таким id уже существует');
+      if (!findId) {
+        this.alarmCollection.push({id, time, callback});
+      } else {
+        throw new Error('Будильник с таким id уже существует');
+      }
+    } catch(err) {
+      console.log(err.message);
     }
   }
 
   removeClock(id) {
     const findId = this.alarmCollection.find( (item) => item.id === id );
     this.alarmCollection = this.alarmCollection.filter( (item) => item.id != id );
-    return !findId ? false : true;
+    return !!findId;
   }
 
   getCurrentFormattedTime() {
@@ -92,8 +97,8 @@ function testCase() {
 
   alarm.addClock(time1, call1, 1);
   alarm.addClock(time2, call2, 2);
-  //alarm.addClock(time3, call3); Выбрасывает ошибку отсутствия id в параметрах.
-  //alarm.addClock(time3, call3, 2); Выбрасывает ошибку, что такой будильник существует
+  //alarm.addClock(time3, call3); //Выбрасывает ошибку отсутствия id в параметрах.
+  //alarm.addClock(time3, call3, 2); //Выбрасывает ошибку, что такой будильник существует
   alarm.addClock(time3, call3, 3);
 
   alarm.printAlarms();
